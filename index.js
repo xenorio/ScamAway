@@ -20,20 +20,20 @@ process.log = log
 
 var config
 var rest
+var client
 
 init()
-
-// Create bot client
-const client = new discord.Client({
-    intents: ["GUILDS", "GUILD_MESSAGES"],
-    presence: config?.presence
-})
-
-
 
 async function init() {
 
     await loadConfig()
+
+    // Create bot client
+    client = new discord.Client({
+        intents: ["GUILDS", "GUILD_MESSAGES"],
+        presence: config.presence
+    })
+
     await loadEvents()
 
     // Set up direct Discord API communication
@@ -144,7 +144,7 @@ async function loadEvents() {
 function log(message, level) {
 
     // If no level provided, default to info
-    if(!level)return console.log(colors.blue.bold('[Info]') + ' > '.yellow + message)
+    if (!level) return console.log(colors.blue.bold('[Info]') + ' > '.yellow + message)
 
     switch (level.toUpperCase()) {
         case 'ERROR':
