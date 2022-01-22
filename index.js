@@ -25,7 +25,7 @@ init()
 // Create bot client
 const client = new discord.Client({
     intents: ["GUILDS", "GUILD_MESSAGES"],
-    presence: config.presence
+    presence: config?.presence
 })
 
 // Set up direct Discord API communication
