@@ -15,6 +15,20 @@ module.exports = {
     },
 
     // API endpoint
-    api: 'https://scamaway.xenorio.xyz/api'
+    api: 'https://scamaway.xenorio.xyz/api',
+
+
+
+    // +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+    // | Everything beyond this point is only used if you host the API yourself. If you use the public API, don't worry about this! |
+    // +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
+
+    // API key
+    // Used for administrative actions, such as adding domains to the database
+    apiKey: '',
+
+    // Dev Discord guild ID
+    // Only administrators of this guild are allowed to use administrative commands
+    devGuild: ''
 
 }

@@ -81,6 +81,7 @@ async function loadCommands() {
         }
 
         let builders = [] // List of command builders for registering with Discord
+        let devBuilders = []
 
         files.forEach(file => {
 
@@ -96,8 +97,13 @@ async function loadCommands() {
             // Add command to commands object
             client.commands[name] = command
 
-            // Add command builder to builder list
-            builders.push(command.builder)
+            if (command.devGuildOnly) {
+                // Add to list for registering in dev guild only
+                devBuilders.push(command.builder)
+            } else {
+                // Add to list for registering globally
+                builders.push(command.builder)
+            }
 
             log(`Loaded command ${colors.bold(name)} successfully`)
 
@@ -105,6 +111,9 @@ async function loadCommands() {
 
         // Register commands as global slash commands
         rest.put(Routes.applicationCommands(client.user.id), { body: builders })
+
+        // Register dev guild commands
+        rest.put(Routes.applicationGuildCommands(client.user.id, config.devGuild), { body: devBuilders })
 
     })
 }
