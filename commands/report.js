@@ -16,7 +16,7 @@ module.exports.run = async(client, interaction) => {
         })
     })
 
-    interaction.reply('Thanks for your report!')
+    interaction.reply({ content: 'Thanks for your report!', ephemeral: true })
 
 }
 
