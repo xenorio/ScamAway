@@ -19,6 +19,7 @@ e   88 88   88  8 88 8  8 88   8 88  8  8 88  8   88
 process.log = log
 
 var config
+var rest
 
 init()
 
@@ -28,17 +29,20 @@ const client = new discord.Client({
     presence: config?.presence
 })
 
-// Set up direct Discord API communication
-const rest = new REST({ version: '9' }).setToken(config.token);
+
 
 async function init() {
 
     await loadConfig()
     await loadEvents()
 
+    // Set up direct Discord API communication
+    rest = new REST({ version: '9' }).setToken(config.token);
+
+    // Login
     await client.login(config.token)
         .catch(err => {
-            log('Unable to log in. Please check the bot token.\nMessage from Discord:' + err.message, 'ERROR')
+            log('Unable to log in. Please check the bot token.\nMessage from Discord: ' + err.message, 'ERROR')
             process.exit()
         })
 
@@ -57,7 +61,7 @@ async function loadConfig() {
     }
 
     // Load
-    config = require('./config.js')
+    config = await require('./config.js')
 }
 
 async function loadCommands() {
