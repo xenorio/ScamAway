@@ -1,19 +1,28 @@
-const colors = require('colors')
+const colors = require('colors');
+const fs = require('fs');
 
 module.exports = async(client, interaction) => {
 
-    // Ignore non-commands
-    if (!interaction.isCommand) return
+    if (interaction.isCommand()) {
+        // If command does not exist, throw error
+        if (!client.commands[interaction.commandName]) {
+            interaction.reply({ content: `Whoops! I don't know this command.`, ephemeral: true })
+            process.log(`Unknown command "${interaction.commandName}"`, 'WARN')
+            return
+        }
 
-    // If command does not exist, throw error
-    if (!client.commands[interaction.commandName]) {
-        interaction.reply(`Whoops! I don't know this command.`)
-        process.log(`Unknown command "${interaction.commandName}"`, 'WARN')
-        return
+        // Run command
+        process.log(`Running command ${colors.bold(interaction.commandName)}`)
+        client.commands[interaction.commandName].run(client, interaction)
     }
 
-    // Run command
-    process.log(`Running command ${colors.bold(interaction.commandName)}`)
-    client.commands[interaction.commandName].run(client, interaction)
+    if (interaction.isSelectMenu()) {
+        if (!fs.existsSync(`./components/select_menu/${interaction.customId}.js`)) {
+            interaction.reply({ content: 'Whoops! This interaction is not known.', ephemeral: true })
+            process.log(`Unknown interaction ID ${colors.bold(interaction.customId)}`, 'ERROR')
+            return
+        }
+        require(`../components/select_menu/${interaction.customId}.js`).run(client, interaction)
+    }
 
 };

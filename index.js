@@ -3,6 +3,7 @@ const fs = require('fs')
 const colors = require('colors')
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
+const level = require('level')
 
 console.log(`${colors.brightMagenta(`
 8""""8                    8""""8                       
@@ -34,6 +35,7 @@ async function init() {
         presence: config.presence
     })
 
+    loadDatabase()
     await loadEvents()
 
     // Set up direct Discord API communication
@@ -139,6 +141,11 @@ async function loadEvents() {
 
     })
 
+}
+
+function loadDatabase() {
+    client.db = level('./database')
+    log('Connected to database')
 }
 
 function log(message, level) {
