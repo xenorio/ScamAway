@@ -1,3 +1,5 @@
+<p align="center"><img src="./logo.png" alt="Logo" width="100"></p>
+
 # ScamAway
 The Anti-Phishing Discord Bot
 
@@ -28,3 +30,7 @@ You can support this project on [LiberaPay](https://liberapay.com/Xenorio)
 Projects being used:
 - [Discord.JS](https://github.com/discordjs/discord.js)
 - [Colors.JS](https://github.com/Marak/colors.js)
+
+Logo:
+- [Pirate flag icon by Delapouite](https://game-icons.net/1x1/delapouite/pirate-flag.html) (CC BY 3.0)
+- [Templar shield icon by Delapouite](https://game-icons.net/1x1/delapouite/templar-shield.html) (CC BY 3.0)
