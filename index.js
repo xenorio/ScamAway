@@ -39,6 +39,7 @@ async function init() {
     await client.login(config.token)
         .catch(err => {
             log('Unable to log in. Please check the bot token.\nMessage from Discord:' + err.message, 'ERROR')
+            process.exit()
         })
 
     loadCommands()
