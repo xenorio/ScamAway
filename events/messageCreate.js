@@ -9,6 +9,7 @@ module.exports = async(client, message) => {
 
     let URLs = extractUrls(message.content, true)
     if (URLs) {
+
         for (let url of URLs) {
 
             let domain = (new URL(url)).hostname
@@ -19,28 +20,55 @@ module.exports = async(client, message) => {
             let body = await response.json()
 
             if (body.blocked) {
-                message.delete()
+                detectMessage(message, settings)
                 process.log('Deleted message containing ' + colors.bold(domain))
-
-                switch (settings.action) {
-                    case "kick":
-                        process.log(`Kicking ${colors.bold(message.author.tag)} from guild ${colors.bold(message.guild.name)}`)
-                        message.member.kick("Phishing detected!").catch(() => {})
-                        break;
-
-                    case "ban":
-                        process.log(`Banning ${colors.bold(message.author.tag)} from guild ${colors.bold(message.guild.name)}`)
-                        message.member.ban("Phishing detected!").catch(() => {})
-                        break;
-
-                    default:
-                        break;
-                }
-
                 return
             }
 
         }
+
+        // @everyone detection
+        if (settings.everyoneDetection) {
+            if (message.content.includes('@everyone') && !message.member.permissionsIn(message.channel).has('MENTION_EVERYONE')) {
+                detectMessage(message, settings)
+
+                // Report all URLs in message
+                let reportURLs = ""
+                for (let url of URLs) {
+                    reportURLs += `${url}\n`
+                }
+                fetch(config.api + '/report', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        url: reportURLs
+                    })
+                })
+
+            }
+        }
+
     }
 
 };
+
+function detectMessage(message, settings) {
+    message.delete()
+
+    switch (settings.action) {
+        case "kick":
+            process.log(`Kicking ${colors.bold(message.author.tag)} from guild ${colors.bold(message.guild.name)}`)
+            message.member.kick("Phishing detected!").catch(() => {})
+            break;
+
+        case "ban":
+            process.log(`Banning ${colors.bold(message.author.tag)} from guild ${colors.bold(message.guild.name)}`)
+            message.member.ban("Phishing detected!").catch(() => {})
+            break;
+
+        default:
+            break;
+    }
+}

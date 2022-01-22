@@ -6,6 +6,13 @@ The Anti-Phishing Discord Bot
 ## What's this?
 ScamAway is a Discord bot that aims to keep your servers free from annoying phishing links by detecting known domains, and has other related features
 
+## Features
+- Automatic detection of malicious links
+- Choose what happens when a message is detected (delete, kick, ban)
+- Report URLs
+- Detect unauthorized @everyone mentions
+- Fully selfhostable!
+
 ## Setup
 - Install [Node.JS](https://nodejs.org)
 - Clone the repository
