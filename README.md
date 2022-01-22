@@ -16,7 +16,7 @@ ScamAway is a Discord bot that aims to keep your servers free from annoying phis
 - Start the bot with ``node index.js``
 
 ## Donate
-You can support this project on [PayPal](https://paypal.me/Xenorio)
+You can support this project on [LiberaPay](https://liberapay.com/Xenorio)
 
 ## Credits
 Projects being used:
