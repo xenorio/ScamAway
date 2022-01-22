@@ -12,6 +12,9 @@ module.exports = {
             name: 'The Anti-Phishing Bot',
             type: 'WATCHING'
         }]
-    }
+    },
+
+    // API endpoint
+    api: 'https://scamaway.xenorio.xyz/api'
 
 }
