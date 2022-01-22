@@ -15,6 +15,9 @@ ScamAway is a Discord bot that aims to keep your servers free from annoying phis
 - Set your bot token in ``config.default.js``
 - Start the bot with ``node index.js``
 
+## Support
+For support and general talk about this project, head to the [Discord server](https://discord.xenorio.xyz)
+
 ## Contributing
 If you want to contribute, please use the ``dev`` branch as upstream
 
