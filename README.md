@@ -3,10 +3,6 @@
 # ScamAway
 The Anti-Phishing Discord Bot
 
-| :warning: WARNING          |
-|:---------------------------|
-| This has no actual functionality yet. Check back later, or contribute! |
-
 ## What's this?
 ScamAway is a Discord bot that aims to keep your servers free from annoying phishing links by detecting known domains, and has other related features
 
@@ -30,6 +26,11 @@ You can support this project on [LiberaPay](https://liberapay.com/Xenorio)
 Projects being used:
 - [Discord.JS](https://github.com/discordjs/discord.js)
 - [Colors.JS](https://github.com/Marak/colors.js)
+- [extract-urls](https://github.com/huckbit/extract-urls)
+- [cross-fetch](https://github.com/lquixada/cross-fetch)
+
+External API:
+- [phish.sinking.yachts](https://phish.sinking.yachts/docs)
 
 Logo:
 - [Pirate flag icon by Delapouite](https://game-icons.net/1x1/delapouite/pirate-flag.html) (CC BY 3.0)
