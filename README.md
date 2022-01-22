@@ -28,6 +28,7 @@ Projects being used:
 - [Colors.JS](https://github.com/Marak/colors.js)
 - [extract-urls](https://github.com/huckbit/extract-urls)
 - [cross-fetch](https://github.com/lquixada/cross-fetch)
+- [LevelDB](https://github.com/Level/level)
 
 External API:
 - [phish.sinking.yachts](https://phish.sinking.yachts/docs)
