@@ -19,7 +19,6 @@ e   88 88   88  8 88 8  8 88   8 88  8  8 88  8   88
 process.log = log
 
 var config
-var commands = {}
 
 init()
 
@@ -32,38 +31,17 @@ const client = new discord.Client({
 // Set up direct Discord API communication
 const rest = new REST({ version: '9' }).setToken(config.token);
 
-client.on('interactionCreate', async (interaction) => {
-
-    // Ignore non-commands
-    if (!interaction.isCommand) return
-
-    // If command does not exist, throw error
-    if (!commands[interaction.commandName]) {
-        interaction.reply(`Whoops! I don't know this command.`)
-        log(`Unknown command "${interaction.commandName}"`, 'WARN')
-        return
-    }
-
-    // Run command
-    log(`Running command ${colors.bold(interaction.commandName)}`)
-    commands[interaction.commandName].run(client, interaction)
-
-})
-
-client.on('ready', () => {
-    log('Logged in and ready to rumble!')
-})
-
 async function init() {
 
     await loadConfig()
+    await loadEvents()
 
     await client.login(config.token)
         .catch(err => {
             log('Unable to log in. Please check the bot token.\nMessage from Discord:' + err.message, 'ERROR')
         })
 
-    await loadCommands()
+    loadCommands()
 
 }
 
@@ -84,6 +62,8 @@ async function loadConfig() {
 async function loadCommands() {
 
     log('Loading commands')
+
+    client.commands = {}
 
     // Get all file names in commands dir
     await fs.readdir('./commands/', (err, files) => {
@@ -107,7 +87,7 @@ async function loadCommands() {
             let command = require(`./commands/${file}`)
 
             // Add command to commands object
-            commands[name] = command
+            client.commands[name] = command
 
             // Add command builder to builder list
             builders.push(command.builder)
@@ -120,6 +100,40 @@ async function loadCommands() {
         rest.put(Routes.applicationCommands(client.user.id), { body: builders })
 
     })
+}
+
+async function loadEvents() {
+
+    log('Loading events')
+
+    // Get all file names in commands dir
+    await fs.readdir('./events/', (err, files) => {
+
+        if (err) {
+            log('Unable to load events. ' + err.message, 'ERROR')
+            process.exit()
+        }
+
+        files.forEach(file => {
+
+            // Ignore non-js files
+            if (!file.endsWith('.js')) return
+
+            // Parse event name from file name
+            let name = file.split('.')[0]
+
+            // Load event
+            let event = require(`./events/${file}`)
+
+            // Bind event
+            client.on(name, event.bind(null, client))
+
+            log(`Loaded event ${colors.bold(name)} successfully`)
+
+        })
+
+    })
+
 }
 
 function log(message, level) {
