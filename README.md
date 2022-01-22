@@ -28,3 +28,7 @@ You can support this project on [LiberaPay](https://liberapay.com/Xenorio)
 Projects being used:
 - [Discord.JS](https://github.com/discordjs/discord.js)
 - [Colors.JS](https://github.com/Marak/colors.js)
+
+Logo:
+- [Pirate flag icon by Delapouite](https://game-icons.net/1x1/delapouite/pirate-flag.html)
+- [Templar shield icon by Delapouite](https://game-icons.net/1x1/delapouite/templar-shield.html)
