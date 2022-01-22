@@ -1,3 +1,5 @@
+<p align="center"><img src="./logo.png" alt="Logo" width="100"></p>
+
 # ScamAway
 The Anti-Phishing Discord Bot
 
