@@ -55,6 +55,24 @@ module.exports = async(client, message) => {
 };
 
 function detectMessage(message, settings) {
+
+    // Log detections
+    if (settings.logs) {
+        let logChannel = message.guild.channels.resolve(settings.logs)
+        if (logChannel) logChannel.send({
+            "embeds": [{
+                "title": "Phishing Detected",
+                "description": message.content,
+                "color": 16711680,
+                "timestamp": new Date().toISOString(),
+                "author": {
+                    "name": message.author.tag,
+                    "icon_url": message.author.avatarURL()
+                }
+            }]
+        })
+    }
+
     message.delete()
 
     switch (settings.action) {
