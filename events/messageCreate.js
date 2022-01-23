@@ -21,7 +21,7 @@ module.exports = async(client, message) => {
 
             if (body.blocked) {
                 detectMessage(message, settings)
-                process.log('Deleted message containing ' + colors.bold(domain))
+                process.log('Detected message containing ' + colors.bold(domain))
                 return
             }
 
@@ -75,7 +75,7 @@ function detectMessage(message, settings) {
 
     if (settings.action == "nothing") return
 
-    message.delete()
+    message.delete().catch(err => {})
 
     switch (settings.action) {
         case "kick":
