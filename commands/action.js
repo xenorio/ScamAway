@@ -14,6 +14,11 @@ module.exports.run = async(client, interaction) => {
                 new MessageSelectMenu()
                 .setCustomId('action-command-menu')
                 .addOptions([{
+                        label: 'Nothing',
+                        description: 'Do nothing. In case you only want to use the log feature.',
+                        value: 'nothing'
+                    },
+                    {
                         label: 'Delete',
                         description: 'Just delete the message',
                         value: 'delete'
