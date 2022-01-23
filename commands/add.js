@@ -15,7 +15,8 @@ module.exports.run = async(client, interaction) => {
     }
 
     let domain = interaction.options.get('domain', true).value
-    let reason = interaction.options.get('reason', false).value
+    let reason = interaction.options.get('reason', false)
+    if (reason) reason = reason.value // Fixes error when no reason is provided because discord.js doesn't just make the value undefined but the entire option.
 
     let res = await fetch(config.api + '/add', {
         method: 'POST',
