@@ -6,21 +6,21 @@ module.exports.run = async(client, interaction) => {
     }
 
     if (!interaction.guild.me.permissions.has('MANAGE_MESSAGES')) {
-        interaction.reply("I don't have the required permission to delete messages!")
+        interaction.reply({ content: "I don't have the required permission to delete messages!", ephemeral: true })
         return
     }
 
     switch (interaction.values[0]) {
         case "kick":
             if (!interaction.guild.me.permissions.has('KICK_MEMBERS')) {
-                interaction.reply("I don't have the required permission to kick members!")
+                interaction.reply({ content: "I don't have the required permission to kick members!", ephemeral: true })
                 return
             }
             break;
 
         case "ban":
             if (!interaction.guild.me.permissions.has('BAN_MEMBERS')) {
-                interaction.reply("I don't have the required permission to ban members!")
+                interaction.reply({ content: "I don't have the required permission to ban members!", ephemeral: true })
                 return
             }
             break;

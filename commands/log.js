@@ -10,7 +10,7 @@ module.exports.run = async(client, interaction) => {
     let channel = interaction.options.get('log-channel', true).value
 
     if (!interaction.guild.me.permissionsIn(channel).has('SEND_MESSAGES') || !interaction.guild.me.permissionsIn(channel).has('VIEW_CHANNEL')) {
-        interaction.reply("I don't have the required permission to send messages in that channel!")
+        interaction.reply({ content: "I don't have the required permission to send messages in that channel!", ephemeral: true })
         return
     }
 
