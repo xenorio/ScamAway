@@ -73,6 +73,8 @@ function detectMessage(message, settings) {
         })
     }
 
+    if (settings.action == "nothing") return
+
     message.delete()
 
     switch (settings.action) {
