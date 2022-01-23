@@ -15,6 +15,7 @@ module.exports.run = async(client, interaction) => {
     }
 
     let domain = interaction.options.get('domain', true).value
+    let reason = interaction.options.get('reason', false).value
 
     let res = await fetch(config.api + '/add', {
         method: 'POST',
@@ -23,7 +24,8 @@ module.exports.run = async(client, interaction) => {
             'Authorization': config.apiKey
         },
         body: JSON.stringify({
-            domain: domain
+            domain: domain,
+            reason: reason
         })
     })
 
@@ -40,4 +42,8 @@ module.exports.builder = new SlashCommandBuilder()
         option.setName('domain')
         .setDescription('The domain to add')
         .setRequired(true)
+    )
+    .addStringOption(option =>
+        option.setName('reason')
+        .setDescription('The reason for adding it')
     )
