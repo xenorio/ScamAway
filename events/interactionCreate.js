@@ -3,6 +3,12 @@ const fs = require('fs');
 
 module.exports = async(client, interaction) => {
 
+    // Prevent commands from DMs
+    if (!interaction.inGuild()) {
+        interaction.reply({ content: 'This bot can only be used directly inside guilds' })
+        return
+    }
+
     if (interaction.isCommand()) {
         // If command does not exist, throw error
         if (!client.commands[interaction.commandName]) {
