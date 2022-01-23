@@ -9,6 +9,11 @@ module.exports.run = async(client, interaction) => {
 
     let channel = interaction.options.get('log-channel', true).value
 
+    if (!interaction.guild.me.permissionsIn(channel).has('SEND_MESSAGES') || !interaction.guild.me.permissionsIn(channel).has('VIEW_CHANNEL')) {
+        interaction.reply("I don't have the required permission to send messages in that channel!")
+        return
+    }
+
     let settings = JSON.parse(await client.db.get(interaction.guildId))
     settings.logs = channel
     client.db.put(interaction.guildId, JSON.stringify(settings))
