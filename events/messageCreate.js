@@ -61,7 +61,7 @@ function detectMessage(message, settings) {
         let logChannel = message.guild.channels.resolve(settings.logs)
         if (logChannel) logChannel.send({
             "embeds": [{
-                "title": "Phishing Detected",
+                "title": "Bad Link Detected",
                 "description": message.content,
                 "color": 16711680,
                 "timestamp": new Date().toISOString(),
@@ -80,12 +80,12 @@ function detectMessage(message, settings) {
     switch (settings.action) {
         case "kick":
             process.log(`Kicking ${colors.bold(message.author.tag)} from guild ${colors.bold(message.guild.name)}`)
-            message.member.kick("Phishing detected!").catch(() => {})
+            message.member.kick("Bad link detected!").catch(() => {})
             break;
 
         case "ban":
             process.log(`Banning ${colors.bold(message.author.tag)} from guild ${colors.bold(message.guild.name)}`)
-            message.member.ban("Phishing detected!").catch(() => {})
+            message.member.ban("Bad link detected!").catch(() => {})
             break;
 
         default:
