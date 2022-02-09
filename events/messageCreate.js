@@ -20,7 +20,7 @@ module.exports = async(client, message) => {
             let body = await response.json()
 
             if (body.blocked) {
-                detectMessage(message, settings)
+                detectMessage(message, settings, body)
                 process.log('Detected message containing ' + colors.bold(domain))
                 return
             }
@@ -54,7 +54,7 @@ module.exports = async(client, message) => {
 
 };
 
-function detectMessage(message, settings) {
+function detectMessage(message, settings, data) {
 
     // Log detections
     if (settings.logs) {
@@ -68,7 +68,11 @@ function detectMessage(message, settings) {
                 "author": {
                     "name": message.author.tag,
                     "icon_url": message.author.avatarURL()
-                }
+                },
+                fields: [{
+                    name: 'Reason',
+                    value: data.reason
+                }]
             }]
         })
     }
