@@ -20,7 +20,7 @@ module.exports = async(client, message) => {
             let body = await response.json()
 
             if (body.blocked) {
-                detectMessage(message, settings)
+                detectMessage(message, settings, body)
                 process.log('Detected message containing ' + colors.bold(domain))
                 return
             }
@@ -54,21 +54,25 @@ module.exports = async(client, message) => {
 
 };
 
-function detectMessage(message, settings) {
+function detectMessage(message, settings, data) {
 
     // Log detections
     if (settings.logs) {
         let logChannel = message.guild.channels.resolve(settings.logs)
         if (logChannel) logChannel.send({
             "embeds": [{
-                "title": "Phishing Detected",
+                "title": "Bad Link Detected",
                 "description": message.content,
                 "color": 16711680,
                 "timestamp": new Date().toISOString(),
                 "author": {
                     "name": message.author.tag,
                     "icon_url": message.author.avatarURL()
-                }
+                },
+                fields: [{
+                    name: 'Reason',
+                    value: data.reason || 'No reason provided'
+                }]
             }]
         })
     }
@@ -80,12 +84,12 @@ function detectMessage(message, settings) {
     switch (settings.action) {
         case "kick":
             process.log(`Kicking ${colors.bold(message.author.tag)} from guild ${colors.bold(message.guild.name)}`)
-            message.member.kick("Phishing detected!").catch(() => {})
+            message.member.kick("Bad link detected!").catch(() => {})
             break;
 
         case "ban":
             process.log(`Banning ${colors.bold(message.author.tag)} from guild ${colors.bold(message.guild.name)}`)
-            message.member.ban("Phishing detected!").catch(() => {})
+            message.member.ban("Bad link detected!").catch(() => {})
             break;
 
         default:
