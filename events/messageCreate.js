@@ -71,7 +71,7 @@ function detectMessage(message, settings, data) {
                 },
                 fields: [{
                     name: 'Reason',
-                    value: data.reason
+                    value: data.reason || 'No reason provided'
                 }]
             }]
         })
