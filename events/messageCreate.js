@@ -84,12 +84,12 @@ function detectMessage(message, settings, data) {
     switch (settings.action) {
         case "kick":
             process.log(`Kicking ${colors.bold(message.author.tag)} from guild ${colors.bold(message.guild.name)}`)
-            message.member.kick("Bad link detected!").catch((err) => { process.log(err.message, 'ERROR') })
+            message.member.kick({ reason: "Bad link detected!" }).catch((err) => { process.log(err.message, 'ERROR') })
             break;
 
         case "ban":
             process.log(`Banning ${colors.bold(message.author.tag)} from guild ${colors.bold(message.guild.name)}`)
-            message.member.ban("Bad link detected!").catch((err) => { process.log(err.message, 'ERROR') })
+            message.member.ban({ reason: "Bad link detected!" }).catch((err) => { process.log(err.message, 'ERROR') })
             break;
 
         default:
