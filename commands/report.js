@@ -1,18 +1,29 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const fetch = require('cross-fetch')
 const config = require('../config.js')
+const extractUrls = require("extract-urls");
 
 module.exports.run = async(client, interaction) => {
 
-    let url = interaction.options.get('url', true).value
+    let input = interaction.options.get('url', true).value
 
-    fetch(config.api + '/report', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            url: url
+    let URLs = extractUrls(input)
+
+    if (!URLs || !URLs[0]) {
+        interaction.reply({ content: 'Please provide the full URL (Not just the domain)', ephemeral: true })
+        return
+    }
+
+    URLs.forEach(url => {
+        fetch(config.api + '/report', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                url: url,
+                user: interaction.user.tag
+            })
         })
     })
 
