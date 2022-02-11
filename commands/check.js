@@ -1,10 +1,20 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const config = require('../config.js')
 const fetch = require('cross-fetch')
+const extractUrls = require("extract-urls");
 
 module.exports.run = async(client, interaction) => {
 
-    let domain = interaction.options.get('domain', true).value
+    let input = interaction.options.get('domain', true).value
+
+    let URLs = extractUrls(input)
+
+    let domain
+    if (URLs && URLs[0]) {
+        domain = (new URL(URLs[0])).hostname
+    } else {
+        domain = input.split('/')[0]
+    }
 
     let response = await fetch(config.api + `/check?domain=${domain}`, {
         method: 'GET'
