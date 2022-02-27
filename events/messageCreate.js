@@ -24,7 +24,7 @@ module.exports = async(client, message) => {
 
             let domain = (new URL(url)).hostname
 
-            let response = await fetch(config.api + `/check?domain=${domain}`, {
+            let response = await fetch(config.api + `/check?domain=${domain}&url=${url}`, {
                 method: 'GET'
             })
             let body = await response.json()
