@@ -22,7 +22,7 @@ Looking for the API behind this? Head to https://github.com/Xenorio/ScamAway-API
 - Clone the repository
 - Install dependencies with ``npm install``
 - Set your bot token in ``config.default.js``
-- Start the bot with ``node index.js``
+- Start the bot with ``npm start``
 
 ## Support
 For support and general talk about this project, head to the [Discord server](https://discord.xenorio.xyz)
