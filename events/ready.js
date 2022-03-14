@@ -23,7 +23,7 @@ module.exports = async(client) => {
                 process.database.get(guild.id)
                     .catch(() => {
                         process.log(`Adding unknown guild ${colors.bold(guild.name)} to database`)
-                        client.db.put(guild.id, JSON.stringify({
+                        process.database.put(guild.id, JSON.stringify({
                             action: 'delete',
                             everyoneDetection: false
                         }))
