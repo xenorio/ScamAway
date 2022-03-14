@@ -8,6 +8,8 @@
 
 // You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+const util = require('../../util/util')
+
 module.exports.run = async(client, interaction) => {
 
     if (!interaction.member.permissions.has('ADMINISTRATOR')) {
@@ -15,7 +17,7 @@ module.exports.run = async(client, interaction) => {
         return
     }
 
-    let settings = JSON.parse(await client.db.get(interaction.guildId))
+    let settings = await util.getSettings(interaction.guildId)
 
     switch (interaction.values[0]) {
         case "enable":
@@ -30,7 +32,7 @@ module.exports.run = async(client, interaction) => {
             break;
     }
 
-    client.db.put(interaction.guildId, JSON.stringify(settings))
+    util.setSettings(interaction.guildId, settings)
 
     interaction.reply({ content: 'Settings saved!', ephemeral: true })
 }
