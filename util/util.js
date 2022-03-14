@@ -8,16 +8,23 @@
 
 // You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-const colors = require('colors')
-const util = require('../util/util')
+module.exports.createLogHook = async(channel, cb) => {
 
-module.exports = async(client, guild) => {
+    channel.createWebhook(`ScamAway`, {
+            avatar: `https://github.com/Xenorio/ScamAway/raw/main/logo.png`,
+            reason: `ScamAway Log`
+        })
+        .then(hook => {
+            cb(hook.url)
+        })
+        .catch(err => { return })
 
-    process.log(`Added to guild ${colors.bold(guild.name)} | ${colors.bold(guild.id)}`)
+}
 
-    util.setSettings(guild.id, {
-        action: 'delete',
-        everyoneDetection: false
-    })
+module.exports.getSettings = async(guildId) => {
+    return JSON.parse(await process.database.get(guildId))
+}
 
-};
+module.exports.setSettings = (guildId, settings) => {
+    process.database.put(guildId, JSON.stringify(settings))
+}

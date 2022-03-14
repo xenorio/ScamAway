@@ -38,6 +38,7 @@ init()
 async function init() {
 
     await loadConfig()
+    await loadDatabase()
 
     // Create bot client
     client = new discord.Client({
@@ -45,7 +46,6 @@ async function init() {
         presence: config.presence
     })
 
-    loadDatabase()
     await loadEvents()
 
     // Set up direct Discord API communication
@@ -163,7 +163,7 @@ async function loadEvents() {
 }
 
 function loadDatabase() {
-    client.db = level('./database')
+    process.database = level('./database')
     log('Connected to database')
 }
 
@@ -189,4 +189,8 @@ function log(message, level) {
             log(`Invalid log level "${level}". Original message: ${message}`, 'ERROR')
             break;
     }
+}
+
+module.exports = {
+    client
 }

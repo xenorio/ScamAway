@@ -12,10 +12,11 @@ const fetch = require('cross-fetch')
 const config = require('../config.js')
 const colors = require('colors')
 const extractUrls = require("extract-urls");
+const util = require('../util/util')
 
 module.exports = async(client, message) => {
 
-    let settings = JSON.parse(await client.db.get(message.guild.id))
+    let settings = await util.getSettings(message.guild.id)
 
     let URLs = extractUrls(message.content, true)
     if (URLs) {
@@ -64,27 +65,39 @@ module.exports = async(client, message) => {
 
 };
 
-function detectMessage(message, settings, data) {
+async function detectMessage(message, settings, data) {
 
     // Log detections
-    if (settings.logs) {
-        let logChannel = message.guild.channels.resolve(settings.logs)
-        if (logChannel) logChannel.send({
-            "embeds": [{
-                "title": "Bad Link Detected",
-                "description": message.content,
-                "color": 16711680,
-                "timestamp": new Date().toISOString(),
-                "author": {
-                    "name": message.author.tag,
-                    "icon_url": message.author.avatarURL()
-                },
-                fields: [{
-                    name: 'Reason',
-                    value: data.reason || 'No reason provided'
-                }]
+    let logPayload = {
+        "embeds": [{
+            "title": "Bad Link Detected",
+            "description": message.content,
+            "color": 16711680,
+            "timestamp": new Date().toISOString(),
+            "author": {
+                "name": message.author.tag,
+                "icon_url": message.author.avatarURL()
+            },
+            fields: [{
+                name: 'Reason',
+                value: data.reason || 'No reason provided'
             }]
+        }]
+    }
+
+    if (settings.logHook) {
+
+        fetch(settings.logHook, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(logPayload)
         })
+
+    } else if (settings.logs) {
+        let logChannel = message.guild.channels.resolve(settings.logs)
+        if (logChannel) logChannel.send(logPayload)
     }
 
     if (settings.action == "nothing") return
