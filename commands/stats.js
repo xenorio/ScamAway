@@ -1,0 +1,70 @@
+// Copyright (C) 2022  Marcus Huber (Xenorio)
+
+// This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published
+// by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more details.
+
+// You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const config = require('../config.js')
+const fetch = require('cross-fetch')
+const extractUrls = require("extract-urls");
+
+module.exports.run = async(client, interaction) => {
+
+    let response = await fetch(config.api + `/stats`, {
+        method: 'GET'
+    })
+
+    let data = await response.json()
+
+    let top = ''
+
+    let detectionList = []
+
+    for (let domain in data.detectionList) {
+        detectionList.push({
+            domain: domain,
+            count: data.detectionList[domain]
+        })
+    }
+
+    let sortedList = detectionList.sort((a, b) => {
+        return a < b
+    })
+
+    for (let i = 0; i < 5; i++) {
+        if (sortedList[i]) top += `${i + 1} | **${sortedList[i].domain}** | **${sortedList[i].count}**\n`
+    }
+
+    if(top == '')top = 'None' //Prevent errors because of empty embeds
+
+    interaction.reply({
+        "embeds": [{
+            "title": "Statistics",
+            "color": 255,
+            "fields": [{
+                    "name": "Blocklist Size",
+                    "value": `**${data.domains}**`
+                },
+                {
+                    "name": "Detected/Checked Links",
+                    "value": `**${data.detections}**/**${data.checks}**`
+                },
+                {
+                    "name": "Top Detections",
+                    "value": `${top}`
+                }
+            ]
+        }]
+    })
+
+
+}
+
+module.exports.builder = new SlashCommandBuilder()
+    .setName('stats')
+    .setDescription('Bot statistics')
