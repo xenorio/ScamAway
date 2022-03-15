@@ -123,7 +123,10 @@ async function loadCommands() {
         rest.put(Routes.applicationCommands(client.user.id), { body: builders })
 
         // Register dev guild commands
-        if(config.devGuild)rest.put(Routes.applicationGuildCommands(client.user.id, config.devGuild), { body: devBuilders })
+        if (config.devGuild) {
+            rest.put(Routes.applicationGuildCommands(client.user.id, config.devGuild), { body: builders })
+            rest.put(Routes.applicationGuildCommands(client.user.id, config.devGuild), { body: devBuilders })
+        }
 
     })
 }
