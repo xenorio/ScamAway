@@ -32,15 +32,15 @@ module.exports.run = async(client, interaction) => {
         })
     }
 
-    let sortedList = detectionList.sort((a, b) => {
-        return a < b
+    detectionList.sort((a, b) => {
+        return b.count - a.count
     })
 
     for (let i = 0; i < 5; i++) {
-        if (sortedList[i]) top += `${i + 1} | **${sortedList[i].domain}** | **${sortedList[i].count}**\n`
+        if (detectionList[i]) top += `${i + 1} | **${detectionList[i].domain}** | **${detectionList[i].count}**\n`
     }
 
-    if(top == '')top = 'None' //Prevent errors because of empty embeds
+    if (top == '') top = 'None' //Prevent errors because of empty embeds
 
     interaction.reply({
         "embeds": [{
