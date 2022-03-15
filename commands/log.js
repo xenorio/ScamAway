@@ -25,7 +25,7 @@ module.exports.run = async(client, interaction) => {
         return
     }
 
-    util.createLogHook(interaction.channel, async hook => {
+    util.createLogHook(channel, async hook => {
 
         let settings = await util.getSettings(interaction.guildId)
         
