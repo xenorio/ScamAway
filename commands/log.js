@@ -18,7 +18,7 @@ module.exports.run = async(client, interaction) => {
         return
     }
 
-    let channel = interaction.options.get('log-channel', true).value
+    let channel = interaction.guild.channels.resolve(interaction.options.get('log-channel', true).value)
 
     if (!interaction.guild.me.permissionsIn(channel).has('MANAGE_WEBHOOKS') || !interaction.guild.me.permissionsIn(channel).has('VIEW_CHANNEL')) {
         interaction.reply({ content: "I don't have the required permission to create webhooks in that channel!", ephemeral: true })
@@ -28,10 +28,10 @@ module.exports.run = async(client, interaction) => {
     util.createLogHook(channel, async hook => {
 
         let settings = await util.getSettings(interaction.guildId)
-        
-        settings.logHook = hook 
-        if(settings.logs)delete settings.logs
-        
+
+        settings.logHook = hook
+        if (settings.logs) delete settings.logs
+
         util.setSettings(interaction.guildId, settings)
 
         interaction.reply({ content: 'Settings saved!', ephemeral: true })
