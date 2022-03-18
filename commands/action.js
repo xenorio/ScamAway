@@ -8,22 +8,22 @@
 
 // You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageActionRow, MessageSelectMenu } = require('discord.js')
+const { Constants } = require('eris')
 
 module.exports.run = async(client, interaction) => {
-    if (!interaction.member.permissions.has('ADMINISTRATOR')) {
-        interaction.reply({ content: "Only administrators are allowed to change settings!", ephemeral: true })
+    if (!interaction.member.permissions.has('administrator')) {
+        interaction.createMessage({ content: "Only administrators are allowed to change settings!", flags: Constants.MessageFlags.EPHEMERAL })
         return
     }
-    interaction.reply({
-        ephemeral: true,
+    interaction.createMessage({
+        flags: Constants.MessageFlags.EPHEMERAL,
         content: 'Select what should happen when phishing is detected',
-        components: [
-            new MessageActionRow().addComponents(
-                new MessageSelectMenu()
-                .setCustomId('action-command-menu')
-                .addOptions([{
+        components: [{
+            type: Constants.ComponentTypes.ACTION_ROW,
+            components: [{
+                custom_id: 'action-command-menu',
+                type: Constants.ComponentTypes.SELECT_MENU,
+                options: [{
                         label: 'Nothing',
                         description: 'Do nothing. In case you only want to use the log feature.',
                         value: 'nothing'
@@ -43,12 +43,14 @@ module.exports.run = async(client, interaction) => {
                         description: 'Delete the message and ban the author',
                         value: 'ban'
                     }
-                ])
-            )
-        ]
+                ]
+            }]
+        }]
     })
+
 }
 
-module.exports.builder = new SlashCommandBuilder()
-    .setName('action')
-    .setDescription('Choose what happens when phishing is detected')
+module.exports.options = {
+    name: 'action',
+    description: 'Choose what happens when phishing is detected'
+}

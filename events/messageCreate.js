@@ -14,9 +14,9 @@ const colors = require('colors')
 const extractUrls = require("extract-urls");
 const util = require('../util/util')
 
-module.exports = async (client, message) => {
-    
-    if(!message.guildID)return
+module.exports = async(client, message) => {
+
+    if (!message.guildID) return
 
     let settings = await util.getSettings(message.guildID)
 
@@ -43,7 +43,7 @@ module.exports = async (client, message) => {
         // @everyone detection
         if (settings.everyoneDetection) {
             if (message.content.includes('@everyone') && !message.channel.permissionsOf(message.member.id).has('mentionEveryone')) {
-                detectMessage(message, settings, {reason: 'Unauthorized @everyone'})
+                detectMessage(message, settings, { reason: 'Unauthorized @everyone' })
 
                 // Report all URLs in message
                 let reportURLs = ""
@@ -108,13 +108,11 @@ async function detectMessage(message, settings, data) {
 
     switch (settings.action) {
         case "kick":
-            process.log(`Kicking ${colors.bold(message.author.tag)} from guild ${colors.bold(message.guild.name)}`)
-            message.member.kick({ reason: "Bad link detected!" }).catch((err) => { process.log(err.message, 'ERROR') })
+            message.member.kick("Bad link detected!").catch((err) => { process.log(err.message, 'ERROR') })
             break;
 
         case "ban":
-            process.log(`Banning ${colors.bold(message.author.tag)} from guild ${colors.bold(message.guild.name)}`)
-            message.member.ban({ reason: "Bad link detected!" }).catch((err) => { process.log(err.message, 'ERROR') })
+            message.member.ban(0, "Bad link detected!").catch((err) => { process.log(err.message, 'ERROR') })
             break;
 
         default:
