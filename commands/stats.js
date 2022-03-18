@@ -8,10 +8,8 @@
 
 // You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-const { SlashCommandBuilder } = require('@discordjs/builders');
 const config = require('../config.js')
 const fetch = require('cross-fetch')
-const extractUrls = require("extract-urls");
 
 module.exports.run = async(client, interaction) => {
 
@@ -42,7 +40,7 @@ module.exports.run = async(client, interaction) => {
 
     if (top == '') top = 'None' //Prevent errors because of empty embeds
 
-    interaction.reply({
+    interaction.createMessage({
         "embeds": [{
             "title": "Statistics",
             "color": 255,
@@ -65,6 +63,7 @@ module.exports.run = async(client, interaction) => {
 
 }
 
-module.exports.builder = new SlashCommandBuilder()
-    .setName('stats')
-    .setDescription('Bot statistics')
+module.exports.options = {
+    name: 'stats',
+    description: 'Bot statistics'
+}

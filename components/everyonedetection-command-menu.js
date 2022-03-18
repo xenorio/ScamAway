@@ -8,18 +8,20 @@
 
 // You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-const util = require('../../util/util')
+const util = require('../util/util')
+
+const { Constants } = require('eris')
 
 module.exports.run = async(client, interaction) => {
 
-    if (!interaction.member.permissions.has('ADMINISTRATOR')) {
-        interaction.reply({ content: "Only administrators are allowed to change settings!", ephemeral: true })
+    if (!interaction.member.permissions.has('administrator')) {
+        interaction.createMessage({ content: "Only administrators are allowed to change settings!", flags: Constants.MessageFlags.EPHEMERAL })
         return
     }
 
-    let settings = await util.getSettings(interaction.guildId)
+    let settings = await util.getSettings(interaction.guildID)
 
-    switch (interaction.values[0]) {
+    switch (interaction.data.values[0]) {
         case "enable":
             settings.everyoneDetection = true
             break;
@@ -32,7 +34,7 @@ module.exports.run = async(client, interaction) => {
             break;
     }
 
-    util.setSettings(interaction.guildId, settings)
+    util.setSettings(interaction.guildID, settings)
 
-    interaction.reply({ content: 'Settings saved!', ephemeral: true })
+    interaction.createMessage({ content: 'Settings saved!', flags: Constants.MessageFlags.EPHEMERAL })
 }

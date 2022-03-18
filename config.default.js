@@ -5,12 +5,17 @@ module.exports = {
     token: '',
 
     // Presence data
+    //
+    // Activity types:
+    // 0 - Playing
+    // 1 - Streaming
+    // 2 - Listening
+    // 3 - Watching
     presence: {
         status: 'online',
-        afk: false,
         activities: [{
             name: 'The Anti-Phishing Bot',
-            type: 'WATCHING'
+            type: 3
         }]
     },
 

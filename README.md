@@ -35,7 +35,7 @@ You can support this project on [LiberaPay](https://liberapay.com/Xenorio)
 
 ## Credits
 Projects being used:
-- [Discord.JS](https://github.com/discordjs/discord.js)
+- [Eris](https://github.com/abalabahaha/eris)
 - [Colors.JS](https://github.com/Marak/colors.js)
 - [extract-urls](https://github.com/huckbit/extract-urls)
 - [cross-fetch](https://github.com/lquixada/cross-fetch)

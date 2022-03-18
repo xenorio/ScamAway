@@ -8,26 +8,27 @@
 
 // You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-const { SlashCommandBuilder } = require('@discordjs/builders');
 const config = require('../config.js')
 const fetch = require('cross-fetch')
 
+const { Constants } = require('eris')
+
 module.exports.run = async(client, interaction) => {
 
-    if (interaction.guildId != config.devGuild) {
-        interaction.reply({ content: 'This guild is not allowed to use administrative commands!', ephemeral: true })
+    if (interaction.guildID != config.devGuild) {
+        interaction.createMessage({ content: 'This guild is not allowed to use administrative commands!', flags: Constants.MessageFlags.EPHEMERAL })
         return
     }
 
-    if (!interaction.member.permissions.has('ADMINISTRATOR')) {
-        interaction.reply({ content: "Only administrators are allowed to use this!", ephemeral: true })
+    if (!interaction.member.permissions.has('administrator')) {
+        interaction.createMessage({ content: "Only administrators are allowed to use this!", flags: Constants.MessageFlags.EPHEMERAL })
         return
     }
 
-    let domains = interaction.options.get('domains', true).value
+    let domains = interaction.data.options.find(x => x.name == 'domains').value
     domains = domains.split(';')
-    let reason = interaction.options.get('reason', false)
-    if (reason) reason = reason.value // Fixes error when no reason is provided because discord.js doesn't just make the value undefined but the entire option.
+    let reason = interaction.data.options.find(x => x.name == 'reason')
+    if (reason) reason = reason.value
 
     for (let domain of domains) {
         await fetch(config.api + '/add', {
@@ -43,21 +44,26 @@ module.exports.run = async(client, interaction) => {
         })
     }
 
-    interaction.reply({ content: `Added **${domains.length}** domains to blocklist`, ephemeral: true })
+    interaction.createMessage({ content: `Added **${domains.length}** domains to blocklist`, flags: Constants.MessageFlags.EPHEMERAL })
 
 }
 
 module.exports.devGuildOnly = true
 
-module.exports.builder = new SlashCommandBuilder()
-    .setName('bulkadd')
-    .setDescription('Adds multiple domains to the blocklist')
-    .addStringOption(option =>
-        option.setName('domains')
-        .setDescription('The domains to add, separated by ;')
-        .setRequired(true)
-    )
-    .addStringOption(option =>
-        option.setName('reason')
-        .setDescription('The reason for adding them')
-    )
+module.exports.options = {
+    name: 'bulkadd',
+    description: 'Adds multiple domains to the blocklist',
+    options: [{
+            type: Constants.ApplicationCommandOptionTypes.STRING,
+            name: 'domains',
+            description: 'The domains to add, separated by ;',
+            required: true
+        },
+        {
+            type: Constants.ApplicationCommandOptionTypes.STRING,
+            name: 'reason',
+            description: 'The reason for adding them',
+            required: false
+        }
+    ]
+}

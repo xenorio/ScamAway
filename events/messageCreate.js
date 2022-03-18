@@ -16,7 +16,9 @@ const util = require('../util/util')
 
 module.exports = async(client, message) => {
 
-    let settings = await util.getSettings(message.guild.id)
+    if (!message.guildID) return
+
+    let settings = await util.getSettings(message.guildID)
 
     let URLs = extractUrls(message.content, true)
     if (URLs) {
@@ -40,8 +42,8 @@ module.exports = async(client, message) => {
 
         // @everyone detection
         if (settings.everyoneDetection) {
-            if (message.content.includes('@everyone') && !message.member.permissionsIn(message.channel).has('MENTION_EVERYONE')) {
-                detectMessage(message, settings)
+            if (message.content.includes('@everyone') && !message.channel.permissionsOf(message.member.id).has('mentionEveryone')) {
+                detectMessage(message, settings, { reason: 'Unauthorized @everyone' })
 
                 // Report all URLs in message
                 let reportURLs = ""
@@ -75,8 +77,8 @@ async function detectMessage(message, settings, data) {
             "color": 16711680,
             "timestamp": new Date().toISOString(),
             "author": {
-                "name": message.author.tag,
-                "icon_url": message.author.avatarURL()
+                "name": `${message.author.username}#${message.author.discriminator}`,
+                "icon_url": message.author.avatarURL
             },
             fields: [{
                 name: 'Reason',
@@ -106,13 +108,11 @@ async function detectMessage(message, settings, data) {
 
     switch (settings.action) {
         case "kick":
-            process.log(`Kicking ${colors.bold(message.author.tag)} from guild ${colors.bold(message.guild.name)}`)
-            message.member.kick({ reason: "Bad link detected!" }).catch((err) => { process.log(err.message, 'ERROR') })
+            message.member.kick("Bad link detected!").catch((err) => { process.log(err.message, 'ERROR') })
             break;
 
         case "ban":
-            process.log(`Banning ${colors.bold(message.author.tag)} from guild ${colors.bold(message.guild.name)}`)
-            message.member.ban({ reason: "Bad link detected!" }).catch((err) => { process.log(err.message, 'ERROR') })
+            message.member.ban(0, "Bad link detected!").catch((err) => { process.log(err.message, 'ERROR') })
             break;
 
         default:

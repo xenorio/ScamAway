@@ -8,14 +8,15 @@
 
 // You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-const { SlashCommandBuilder } = require('@discordjs/builders');
 const config = require('../config.js')
 const fetch = require('cross-fetch')
 const extractUrls = require("extract-urls");
 
+const { Constants } = require('eris')
+
 module.exports.run = async(client, interaction) => {
 
-    let input = interaction.options.get('domain', true).value
+    let input = interaction.data.options.find(x => x.name == 'domain').value
 
     let URLs = extractUrls(input)
 
@@ -33,7 +34,7 @@ module.exports.run = async(client, interaction) => {
     let data = await response.json()
 
     if (data.blocked) {
-        interaction.reply({
+        interaction.createMessage({
             "embeds": [{
                 "title": "Domain Check",
                 "description": domain,
@@ -50,7 +51,7 @@ module.exports.run = async(client, interaction) => {
             }]
         })
     } else {
-        interaction.reply({
+        interaction.createMessage({
             "embeds": [{
                 "title": "Domain Check",
                 "description": domain,
@@ -65,11 +66,13 @@ module.exports.run = async(client, interaction) => {
 
 }
 
-module.exports.builder = new SlashCommandBuilder()
-    .setName('check')
-    .setDescription('Checks if a domain is being detected')
-    .addStringOption(option =>
-        option.setName('domain')
-        .setDescription('The domain to check')
-        .setRequired(true)
-    )
+module.exports.options = {
+    name: 'check',
+    description: 'Checks if a domain is being detected',
+    options: [{
+        type: Constants.ApplicationCommandOptionTypes.STRING,
+        name: 'domain',
+        description: 'The domain to check',
+        required: true
+    }]
+}

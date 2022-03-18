@@ -8,19 +8,20 @@
 
 // You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-const { SlashCommandBuilder } = require('@discordjs/builders');
 const fetch = require('cross-fetch')
 const config = require('../config.js')
 const extractUrls = require("extract-urls");
 
+const { Constants } = require('eris')
+
 module.exports.run = async(client, interaction) => {
 
-    let input = interaction.options.get('url', true).value
+    let input = interaction.data.options.find(x => x.name == 'url').value
 
     let URLs = extractUrls(input)
 
     if (!URLs || !URLs[0]) {
-        interaction.reply({ content: 'Please provide the full URL (Not just the domain)', ephemeral: true })
+        interaction.createMessage({ content: 'Please provide the full URL (Not just the domain)', flags: 64 })
         return
     }
 
@@ -32,20 +33,22 @@ module.exports.run = async(client, interaction) => {
             },
             body: JSON.stringify({
                 url: url,
-                user: interaction.user.tag
+                user: `${interaction.member.username}#${interaction.member.discriminator}`
             })
         })
     })
 
-    interaction.reply({ content: 'Thanks for your report!', ephemeral: true })
+    interaction.createMessage({ content: 'Thanks for your report!', flags: 64 })
 
 }
 
-module.exports.builder = new SlashCommandBuilder()
-    .setName('report')
-    .setDescription('Report a link')
-    .addStringOption(option =>
-        option.setName('url')
-        .setDescription('The URL you want to report')
-        .setRequired(true)
-    )
+module.exports.options = {
+    name: 'report',
+    description: 'Report a link',
+    options: [{
+        type: Constants.ApplicationCommandOptionTypes.STRING,
+        name: 'url',
+        description: 'The URL you want to report',
+        required: true
+    }]
+}

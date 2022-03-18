@@ -8,12 +8,18 @@
 
 // You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-const { SlashCommandBuilder } = require('@discordjs/builders');
-
 module.exports.run = async(client, interaction) => {
-    interaction.reply("Pong 🏓\n``" + client.ws.ping + "ms``")
+    let ping = Math.round(client.shards.reduce((a, b) => a + b.latency, 0) / client.shards.size)
+
+    if (ping == Infinity) {
+        interaction.createMessage("Pong 🏓")
+    } else {
+        interaction.createMessage("Pong 🏓\n``" + Math.round(client.shards.reduce((a, b) => a + b.latency, 0) / client.shards.size) + "ms``")
+    }
+
 }
 
-module.exports.builder = new SlashCommandBuilder()
-    .setName('ping')
-    .setDescription('Show the current ping')
+module.exports.options = {
+    name: 'ping',
+    description: 'Show the current ping'
+}
