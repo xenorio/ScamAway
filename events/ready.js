@@ -12,6 +12,8 @@ const colors = require('colors')
 const { log } = require('../util/util')
 const commands = require('../util/commands')
 
+const config = require('../config')
+
 let firstRun = true
 
 module.exports = async (client) => {
@@ -21,6 +23,8 @@ module.exports = async (client) => {
     firstRun = false
 
     commands.load(client)
+
+    client.editStatus(config.presence.status, config.presence.activities)
 
     log('Logged in and ready to rumble!')
 
