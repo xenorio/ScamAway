@@ -47,7 +47,8 @@ module.exports.load = async(client) => {
                     'everyonedetection',
                     'action',
                     'log',
-                    'check'
+                    'check',
+                    'add'
                 ].indexOf(name) <= -1) return
 
             // Load command
