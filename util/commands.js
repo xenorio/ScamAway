@@ -67,7 +67,7 @@ module.exports.load = async(client) => {
         })
 
         client.bulkEditCommands(commandOptions)
-        if (config.devGuild) client.bulkEditGuildCommands(config.devGuild, commandOptions.concat(devCommandOptions))
+        if (config.devGuild) client.bulkEditGuildCommands(config.devGuild, devCommandOptions)
 
     })
 }
