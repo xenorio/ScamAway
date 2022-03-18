@@ -48,7 +48,8 @@ module.exports.load = async(client) => {
                     'action',
                     'log',
                     'check',
-                    'add'
+                'add',
+                    'remove'
                 ].indexOf(name) <= -1) return
 
             // Load command
