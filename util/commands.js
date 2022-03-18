@@ -43,7 +43,8 @@ module.exports.load = async(client) => {
                 'stats',
                 'report',
                 'everyonedetection',
-                'action'
+                'action',
+                'log'
             ].indexOf(name) <= -1) return
 
             // Load command

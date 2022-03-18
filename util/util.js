@@ -9,6 +9,7 @@
 // You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 const colors = require('colors')
+const fs = require('fs')
 
 module.exports.log = (message, level) => {
 
@@ -36,12 +37,14 @@ module.exports.log = (message, level) => {
 
 module.exports.createLogHook = async(channel, cb) => {
 
-    channel.createWebhook(`ScamAway`, {
-            avatar: `https://github.com/Xenorio/ScamAway/raw/main/logo.png`,
-            reason: `ScamAway Log`
-        })
+    let avatar = fs.readFileSync('./logo.png').toString('base64')
+
+    channel.createWebhook({
+            avatar: `data:image/png;base64,${avatar}`,
+            name: `ScamAway`
+        }, `ScamAway Log`)
         .then(hook => {
-            cb(hook.url)
+            cb(`https://discord.com/api/webhooks/${hook.id}/${hook.token}`)
         })
         .catch(err => { return })
 
