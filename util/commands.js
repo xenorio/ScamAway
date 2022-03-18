@@ -15,12 +15,14 @@ const config = require('../config')
 
 let commands = {}
 
-let commandOptions = []
-let devCommandOptions = []
-
 module.exports.load = async(client) => {
 
     log('Loading commands')
+
+    let commandOptions = []
+    let devCommandOptions = []
+
+    commands = {}
 
     // Get all file names in commands dir
     await fs.readdir('./commands/', (err, files) => {
@@ -39,13 +41,14 @@ module.exports.load = async(client) => {
             let name = file.split('.')[0]
 
             if ([
-                'ping',
-                'stats',
-                'report',
-                'everyonedetection',
-                'action',
-                'log'
-            ].indexOf(name) <= -1) return
+                    'ping',
+                    'stats',
+                    'report',
+                    'everyonedetection',
+                    'action',
+                    'log',
+                    'check'
+                ].indexOf(name) <= -1) return
 
             // Load command
             let command = require(`../commands/${file}`)
@@ -64,7 +67,7 @@ module.exports.load = async(client) => {
         })
 
         client.bulkEditCommands(commandOptions)
-        if(config.devGuild) client.bulkEditGuildCommands(config.devGuild, commandOptions.concat(devCommandOptions))
+        if (config.devGuild) client.bulkEditGuildCommands(config.devGuild, commandOptions.concat(devCommandOptions))
 
     })
 }
@@ -75,4 +78,4 @@ module.exports.get = (name) => {
     } else {
         return null
     }
-} 
+}
