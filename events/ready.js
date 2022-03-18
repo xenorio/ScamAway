@@ -12,8 +12,14 @@ const colors = require('colors')
 const { log } = require('../util/util')
 const commands = require('../util/commands')
 
+let firstRun = true
+
 module.exports = async (client) => {
     
+    // Prevent firing multiple times
+    if (!firstRun) return
+    firstRun = false
+
     commands.load(client)
 
     log('Logged in and ready to rumble!')
