@@ -40,18 +40,6 @@ module.exports.load = async(client) => {
             // Parse command name from file name
             let name = file.split('.')[0]
 
-            if ([
-                    'ping',
-                    'stats',
-                    'report',
-                    'everyonedetection',
-                    'action',
-                    'log',
-                    'check',
-                'add',
-                    'remove'
-                ].indexOf(name) <= -1) return
-
             // Load command
             let command = require(`../commands/${file}`)
 
