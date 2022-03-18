@@ -8,12 +8,18 @@
 
 // You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-module.exports.run = async (client, interaction) => {
-    console.log(client.latency)
-    interaction.createMessage("Pong 🏓")
+module.exports.run = async(client, interaction) => {
+    let ping = Math.round(client.shards.reduce((a, b) => a + b.latency, 0) / client.shards.size)
+
+    if (ping == Infinity) {
+        interaction.createMessage("Pong 🏓")
+    } else {
+        interaction.createMessage("Pong 🏓\n``" + Math.round(client.shards.reduce((a, b) => a + b.latency, 0) / client.shards.size) + "ms``")
+    }
+
 }
 
 module.exports.options = {
     name: 'ping',
-    description: 'Check if the bot answers'
+    description: 'Show the current ping'
 }
