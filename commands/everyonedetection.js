@@ -8,22 +8,23 @@
 
 // You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageActionRow, MessageSelectMenu } = require('discord.js')
+const { Constants } = require('eris')
 
 module.exports.run = async(client, interaction) => {
-    if (!interaction.member.permissions.has('ADMINISTRATOR')) {
-        interaction.reply({ content: "Only administrators are allowed to change settings!", ephemeral: true })
+
+    if (!interaction.member.permissions.has('administrator')) {
+        interaction.createMessage({ content: "Only administrators are allowed to change settings!", flags: Constants.MessageFlags.EPHEMERAL })
         return
     }
-    interaction.reply({
-        ephemeral: true,
+    interaction.createMessage({
+        flags: Constants.MessageFlags.EPHEMERAL,
         content: 'This automatically detects messages that contain an unauthorized @everyone and at least 1 link.\nLinks are automatically being reported.',
-        components: [
-            new MessageActionRow().addComponents(
-                new MessageSelectMenu()
-                .setCustomId('everyonedetection-command-menu')
-                .addOptions([{
+        components: [{
+            type: Constants.ComponentTypes.ACTION_ROW,
+            components: [{
+                custom_id: 'everyonedetection-command-menu',
+                type: Constants.ComponentTypes.SELECT_MENU,
+                options: [{
                         label: 'Enable',
                         description: 'Enables @everyone detection',
                         value: 'enable'
@@ -33,12 +34,13 @@ module.exports.run = async(client, interaction) => {
                         description: 'Disables @everyone detection',
                         value: 'disable'
                     }
-                ])
-            )
-        ]
+                ]
+            }]
+        }]
     })
 }
 
-module.exports.builder = new SlashCommandBuilder()
-    .setName('everyonedetection')
-    .setDescription('Choose what happens when an unauthorized @everyone is detected')
+module.exports.options = {
+    name: 'everyonedetection',
+    description: 'Choose what happens when an unauthorized @everyone is detected'
+}

@@ -41,7 +41,8 @@ module.exports.load = async(client) => {
             if ([
                 'ping',
                 'stats',
-                'report'
+                'report',
+                'everyonedetection'
             ].indexOf(name) <= -1) return
 
             // Load command

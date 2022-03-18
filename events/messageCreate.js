@@ -42,8 +42,8 @@ module.exports = async (client, message) => {
 
         // @everyone detection
         if (settings.everyoneDetection) {
-            if (message.content.includes('@everyone') && !message.member.permissionsIn(message.channel).has('MENTION_EVERYONE')) {
-                detectMessage(message, settings)
+            if (message.content.includes('@everyone') && !message.channel.permissionsOf(message.member.id).has('mentionEveryone')) {
+                detectMessage(message, settings, {reason: 'Unauthorized @everyone'})
 
                 // Report all URLs in message
                 let reportURLs = ""
