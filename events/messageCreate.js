@@ -14,9 +14,11 @@ const colors = require('colors')
 const extractUrls = require("extract-urls");
 const util = require('../util/util')
 
-module.exports = async(client, message) => {
+module.exports = async (client, message) => {
+    
+    if(!message.guildID)return
 
-    let settings = await util.getSettings(message.guild.id)
+    let settings = await util.getSettings(message.guildID)
 
     let URLs = extractUrls(message.content, true)
     if (URLs) {
@@ -75,8 +77,8 @@ async function detectMessage(message, settings, data) {
             "color": 16711680,
             "timestamp": new Date().toISOString(),
             "author": {
-                "name": message.author.tag,
-                "icon_url": message.author.avatarURL()
+                "name": `${message.author.username}#${message.author.discriminator}`,
+                "icon_url": message.author.avatarURL
             },
             fields: [{
                 name: 'Reason',

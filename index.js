@@ -8,12 +8,12 @@
 
 // You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-const discord = require('discord.js')
+const Eris = require('eris')
 const fs = require('fs')
 const colors = require('colors')
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
 const level = require('level')
+
+const { log } = require('./util/util')
 
 console.log(`${colors.brightMagenta(`
 8""""8                    8""""8                       
@@ -41,24 +41,22 @@ async function init() {
     await loadDatabase()
 
     // Create bot client
-    client = new discord.Client({
-        intents: ["GUILDS", "GUILD_MESSAGES"],
-        presence: config.presence
+    client = new Eris.CommandClient(config.token, {
+        intents: ["guilds", "guildMessages"]
     })
+
+    client.editStatus(config.presence.status, config.presence.activities)
 
     await loadEvents()
 
-    // Set up direct Discord API communication
-    rest = new REST({ version: '9' }).setToken(config.token);
-
     // Login
-    await client.login(config.token)
+    await client.connect()
         .catch(err => {
             log('Unable to log in. Please check the bot token.\nMessage from Discord: ' + err.message, 'ERROR')
             process.exit()
         })
 
-    loadCommands()
+    //loadCommands()
 
 }
 
@@ -80,8 +78,6 @@ async function loadCommands() {
 
     log('Loading commands')
 
-    client.commands = {}
-
     // Get all file names in commands dir
     await fs.readdir('./commands/', (err, files) => {
 
@@ -89,9 +85,6 @@ async function loadCommands() {
             log('Unable to load commands. ' + err.message, 'ERROR')
             process.exit()
         }
-
-        let builders = [] // List of command builders for registering with Discord
-        let devBuilders = []
 
         files.forEach(file => {
 
@@ -101,32 +94,26 @@ async function loadCommands() {
             // Parse command name from file name
             let name = file.split('.')[0]
 
+            if(name != 'ping')return
+
             // Load command
             let command = require(`./commands/${file}`)
 
             // Add command to commands object
             client.commands[name] = command
 
-            if (command.devGuildOnly) {
-                // Add to list for registering in dev guild only
-                devBuilders.push(command.builder)
+            if (command.devGuildOnly && config.devGuild) {
+                // Register only in dev guild
+                client.createGuildCommand(config.devGuild, command.options, 1)
             } else {
-                // Add to list for registering globally
-                builders.push(command.builder)
+                // Register globally
+                //client.createGuildCommand(config.devGuild, command.options, 1)
+                client.createCommand(command.options, 1)
             }
 
             log(`Loaded command ${colors.bold(name)} successfully`)
 
         })
-
-        // Register commands as global slash commands
-        rest.put(Routes.applicationCommands(client.user.id), { body: builders })
-
-        // Register dev guild commands
-        if (config.devGuild) {
-            rest.put(Routes.applicationGuildCommands(client.user.id, config.devGuild), { body: builders })
-            rest.put(Routes.applicationGuildCommands(client.user.id, config.devGuild), { body: devBuilders })
-        }
 
     })
 }
@@ -168,30 +155,6 @@ async function loadEvents() {
 function loadDatabase() {
     process.database = level('./database')
     log('Connected to database')
-}
-
-function log(message, level) {
-
-    // If no level provided, default to info
-    if (!level) return console.log(colors.blue.bold('[Info]') + ' > '.yellow + message)
-
-    switch (level.toUpperCase()) {
-        case 'ERROR':
-            console.log(colors.red.bold('[Error]') + ' > '.yellow + message)
-            break;
-
-        case 'WARN':
-            console.log(colors.yellow.bold('[Warning]') + ' > '.yellow + message)
-            break;
-
-        case 'INFO':
-            console.log(colors.blue.bold('[Info]') + ' > '.yellow + message)
-            break;
-
-        default:
-            log(`Invalid log level "${level}". Original message: ${message}`, 'ERROR')
-            break;
-    }
 }
 
 module.exports = {

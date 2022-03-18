@@ -9,26 +9,28 @@
 // You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 const colors = require('colors')
+const { log } = require('../util/util')
+const commands = require('../util/commands')
 
-module.exports = async(client) => {
+module.exports = async (client) => {
+    
+    commands.load(client)
 
-    process.log('Logged in and ready to rumble!')
+    log('Logged in and ready to rumble!')
 
-    process.log(`Invite link: https://discord.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=1394254146630&scope=bot%20applications.commands`)
+    log(`Invite link: https://discord.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=1394254146630&scope=bot%20applications.commands`)
 
     // Load unknown guilds
-    client.guilds.fetch()
-        .then(guilds => {
-            guilds.forEach(guild => {
-                process.database.get(guild.id)
-                    .catch(() => {
-                        process.log(`Adding unknown guild ${colors.bold(guild.name)} to database`)
-                        process.database.put(guild.id, JSON.stringify({
-                            action: 'delete',
-                            everyoneDetection: false
-                        }))
-                    })
+    client.guilds.forEach(guild => {
+        process.database.get(guild.id)
+            .catch(() => {
+                log(`Adding unknown guild ${colors.bold(guild.name)} to database`)
+                process.database.put(guild.id, JSON.stringify({
+                    action: 'delete',
+                    everyoneDetection: false
+                }))
             })
-        })
+    })
+
 
 };

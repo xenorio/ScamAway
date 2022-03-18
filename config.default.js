@@ -7,7 +7,6 @@ module.exports = {
     // Presence data
     presence: {
         status: 'online',
-        afk: false,
         activities: [{
             name: 'The Anti-Phishing Bot',
             type: 'WATCHING'

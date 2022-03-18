@@ -8,12 +8,12 @@
 
 // You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-const { SlashCommandBuilder } = require('@discordjs/builders');
-
-module.exports.run = async(client, interaction) => {
-    interaction.reply("Pong 🏓\n``" + client.ws.ping + "ms``")
+module.exports.run = async (client, interaction) => {
+    console.log(client.latency)
+    interaction.createMessage("Pong 🏓")
 }
 
-module.exports.builder = new SlashCommandBuilder()
-    .setName('ping')
-    .setDescription('Show the current ping')
+module.exports.options = {
+    name: 'ping',
+    description: 'Check if the bot answers'
+}

@@ -8,6 +8,32 @@
 
 // You should have received a copy of the GNU Affero General Public License along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+const colors = require('colors')
+
+module.exports.log = (message, level) => {
+
+    // If no level provided, default to info
+    if (!level) return console.log(colors.blue.bold('[Info]') + ' > '.yellow + message)
+
+    switch (level.toUpperCase()) {
+        case 'ERROR':
+            console.log(colors.red.bold('[Error]') + ' > '.yellow + message)
+            break;
+
+        case 'WARN':
+            console.log(colors.yellow.bold('[Warning]') + ' > '.yellow + message)
+            break;
+
+        case 'INFO':
+            console.log(colors.blue.bold('[Info]') + ' > '.yellow + message)
+            break;
+
+        default:
+            log(`Invalid log level "${level}". Original message: ${message}`, 'ERROR')
+            break;
+    }
+}
+
 module.exports.createLogHook = async(channel, cb) => {
 
     channel.createWebhook(`ScamAway`, {
