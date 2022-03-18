@@ -3,6 +3,11 @@
 # ScamAway
 The Anti-Phishing Discord Bot
 
+## ATTENTION
+This is **NOT** the current version of ScamAway! Please use the [main](https://github.com/Xenorio/ScamAway/tree/main) branch!
+
+v1 is the version of ScamAway before it had been ported to [Eris](https://github.com/abalabahaha/eris), and is only being kept for archival purposes. It will not receive updates!
+
 ## What's this?
 ScamAway is a Discord bot that aims to keep your servers free from annoying phishing links by detecting known domains, and has other related features
 
