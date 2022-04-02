@@ -30,7 +30,6 @@ e   88 88   88  8 88 8  8 88   8 88  8  8 88  8   88
 process.log = log
 
 var config
-var rest
 var client
 
 init()
@@ -56,8 +55,6 @@ async function init() {
             process.exit()
         })
 
-    //loadCommands()
-
 }
 
 async function loadConfig() {
@@ -74,55 +71,11 @@ async function loadConfig() {
     config = await require('./config.js')
 }
 
-async function loadCommands() {
-
-    log('Loading commands')
-
-    // Get all file names in commands dir
-    await fs.readdir('./commands/', (err, files) => {
-
-        if (err) {
-            log('Unable to load commands. ' + err.message, 'ERROR')
-            process.exit()
-        }
-
-        files.forEach(file => {
-
-            // Ignore non-js files
-            if (!file.endsWith('.js')) return
-
-            // Parse command name from file name
-            let name = file.split('.')[0]
-
-            if(name != 'ping')return
-
-            // Load command
-            let command = require(`./commands/${file}`)
-
-            // Add command to commands object
-            client.commands[name] = command
-
-            if (command.devGuildOnly && config.devGuild) {
-                // Register only in dev guild
-                client.createGuildCommand(config.devGuild, command.options, 1)
-            } else {
-                // Register globally
-                //client.createGuildCommand(config.devGuild, command.options, 1)
-                client.createCommand(command.options, 1)
-            }
-
-            log(`Loaded command ${colors.bold(name)} successfully`)
-
-        })
-
-    })
-}
-
 async function loadEvents() {
 
     log('Loading events')
 
-    // Get all file names in commands dir
+    // Get all file names in events dir
     await fs.readdir('./events/', (err, files) => {
 
         if (err) {
