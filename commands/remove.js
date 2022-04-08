@@ -30,6 +30,7 @@ module.exports.run = async(client, interaction) => {
     fetch(config.api + '/remove', {
         method: 'POST',
         headers: {
+            'X-Identity': config.identifier,
             'Content-Type': 'application/json',
             'Authorization': config.apiKey
         },

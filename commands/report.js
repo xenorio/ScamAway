@@ -29,6 +29,7 @@ module.exports.run = async(client, interaction) => {
         fetch(config.api + '/report', {
             method: 'POST',
             headers: {
+                'X-Identity': config.identifier,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
