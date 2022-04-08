@@ -26,8 +26,21 @@ module.exports.run = async(client, interaction) => {
     }
 
     let domain = interaction.data.options.find(x => x.name == 'domain').value
+
     let reason = interaction.data.options.find(x => x.name == 'reason')
     if (reason) reason = reason.value
+
+    let forward = interaction.data.options.find(x => x.name == 'forward')
+    if (forward) forward = forward.value
+
+    let payload = {
+        domain: domain,
+        reason: reason
+    }
+
+    if (forward) {
+        payload.forward = forward
+    }
 
     await fetch(config.api + '/add', {
         method: 'POST',
@@ -36,10 +49,7 @@ module.exports.run = async(client, interaction) => {
             'Content-Type': 'application/json',
             'Authorization': config.apiKey
         },
-        body: JSON.stringify({
-            domain: domain,
-            reason: reason
-        })
+        body: JSON.stringify(payload)
     })
 
     interaction.createMessage({ content: `Added **${domain}** to blocklist`, flags: Constants.MessageFlags.EPHEMERAL })
@@ -61,6 +71,12 @@ module.exports.options = {
             type: Constants.ApplicationCommandOptionTypes.STRING,
             name: 'reason',
             description: 'The reason for adding it',
+            required: false
+        },
+        {
+            type: Constants.ApplicationCommandOptionTypes.STRING,
+            name: 'forward',
+            description: 'URL to forward to Fish Fish',
             required: false
         }
     ]
