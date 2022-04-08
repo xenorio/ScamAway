@@ -72,7 +72,7 @@ async function loadConfig() {
     config = await require('./config.js')
 
     // Check for errors with API requests
-    let res = await fetch(config.api + '/check?domain=scamawaytest.com', {
+    let res = await fetch(config.api + '/stats', {
         headers: {
             'X-Identity': config.identifier
         }
