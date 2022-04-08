@@ -34,6 +34,7 @@ module.exports.run = async(client, interaction) => {
         await fetch(config.api + '/add', {
             method: 'POST',
             headers: {
+                'X-Identity': config.identifier,
                 'Content-Type': 'application/json',
                 'Authorization': config.apiKey
             },

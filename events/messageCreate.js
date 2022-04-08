@@ -28,7 +28,10 @@ module.exports = async(client, message) => {
             let domain = (new URL(url)).hostname
 
             let response = await fetch(config.api + `/check?domain=${domain}&url=${url}`, {
-                method: 'GET'
+                method: 'GET',
+                headers: {
+                    'X-Identity': config.identifier
+                }
             })
             let body = await response.json()
 
@@ -53,6 +56,7 @@ module.exports = async(client, message) => {
                 fetch(config.api + '/report', {
                     method: 'POST',
                     headers: {
+                        'X-Identity': config.identifier,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({

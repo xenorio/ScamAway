@@ -14,7 +14,10 @@ const fetch = require('cross-fetch')
 module.exports.run = async(client, interaction) => {
 
     let response = await fetch(config.api + `/stats`, {
-        method: 'GET'
+        method: 'GET',
+        headers: {
+            'X-Identity': config.identifier
+        }
     })
 
     let data = await response.json()

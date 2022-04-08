@@ -12,6 +12,7 @@ const Eris = require('eris')
 const fs = require('fs')
 const colors = require('colors')
 const level = require('level')
+const fetch = require('cross-fetch')
 
 const { log } = require('./util/util')
 
@@ -69,6 +70,23 @@ async function loadConfig() {
 
     // Load
     config = await require('./config.js')
+
+    // Check for errors with API requests
+    let res = await fetch(config.api + '/check?domain=scamawaytest.com', {
+        headers: {
+            'X-Identity': config.identifier
+        }
+    })
+    let data = await res.json()
+
+    if (data.error) {
+        log(`API Error: ${data.error}`, 'ERROR')
+        if (data.error == 'Please provide identification using the X-Identity header') {
+            log('Note: This refers to the "identifier" config entry')
+        }
+        process.exit()
+    }
+
 }
 
 async function loadEvents() {
