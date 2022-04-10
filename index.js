@@ -13,6 +13,7 @@ const fs = require('fs')
 const colors = require('colors')
 const level = require('level')
 const fetch = require('cross-fetch')
+const ms = require('ms')
 
 const { log } = require('./util/util')
 const whitelist = require('./util/whitelist')
@@ -61,7 +62,7 @@ async function init() {
 
     setInterval(() => {
         whitelist.load()
-    }, 60000)
+    }, ms(config.whitelistRefresh))
 
 }
 
