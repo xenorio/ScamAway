@@ -15,6 +15,7 @@ const level = require('level')
 const fetch = require('cross-fetch')
 
 const { log } = require('./util/util')
+const whitelist = require('./util/whitelist')
 
 console.log(`${colors.brightMagenta(`
 8""""8                    8""""8                       
@@ -55,6 +56,12 @@ async function init() {
             log('Unable to log in. Please check the bot token.\nMessage from Discord: ' + err.message, 'ERROR')
             process.exit()
         })
+    
+    whitelist.load()
+
+    setInterval(() => {
+        whitelist.load()
+    }, 60000)
 
 }
 
