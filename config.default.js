@@ -26,6 +26,9 @@ module.exports = {
     // This may be your website, GitHub profile, Discord guild, something along those lines
     identifier: "null",
 
+    // Interval for refreshing the whitelist
+    whitelistRefresh: '5m',
+
 
 
     // +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
