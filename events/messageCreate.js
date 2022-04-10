@@ -13,8 +13,9 @@ const config = require('../config.js')
 const colors = require('colors')
 const extractUrls = require("extract-urls");
 const util = require('../util/util')
+const whitelist = require('../util/whitelist')
 
-module.exports = async(client, message) => {
+module.exports = async (client, message) => {
 
     if (!message.guildID) return
 
@@ -26,6 +27,8 @@ module.exports = async(client, message) => {
         for (let url of URLs) {
 
             let domain = (new URL(url)).hostname
+
+            if (whitelist.check(domain)) continue
 
             let response = await fetch(config.api + `/check?domain=${domain}&url=${url}`, {
                 method: 'GET',
@@ -51,6 +54,8 @@ module.exports = async(client, message) => {
                 // Report all URLs in message
                 let reportURLs = ""
                 for (let url of URLs) {
+                    let domain = (new URL(url)).hostname
+                    if (whitelist.check(domain)) continue
                     reportURLs += `${url}\n`
                 }
                 fetch(config.api + '/report', {
