@@ -10,6 +10,8 @@
 
 const colors = require('colors')
 const fs = require('fs')
+const fetch = require('cross-fetch')
+const config = require('../config')
 
 module.exports.log = (message, level) => {
 
@@ -56,4 +58,15 @@ module.exports.getSettings = async(guildId) => {
 
 module.exports.setSettings = (guildId, settings) => {
     process.database.put(guildId, JSON.stringify(settings))
+}
+
+module.exports.checkDomain = async(domain) => {
+    let response = await fetch(config.api + `/check?domain=${domain}`, {
+        method: 'GET',
+        headers: {
+            'X-Identity': config.identifier
+        }
+    })
+    let body = await response.json()
+    return body
 }
