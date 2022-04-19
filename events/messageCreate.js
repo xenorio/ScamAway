@@ -14,8 +14,9 @@ const colors = require('colors')
 const extractUrls = require("extract-urls");
 const util = require('../util/util')
 const whitelist = require('../util/whitelist')
+const redirects = require('../util/redirects')
 
-module.exports = async (client, message) => {
+module.exports = async(client, message) => {
 
     if (!message.guildID) return
 
@@ -30,18 +31,33 @@ module.exports = async (client, message) => {
 
             if (whitelist.check(domain)) continue
 
-            let response = await fetch(config.api + `/check?domain=${domain}&url=${url}`, {
-                method: 'GET',
-                headers: {
-                    'X-Identity': config.identifier
-                }
-            })
-            let body = await response.json()
+            let data = await util.checkDomain(domain)
 
-            if (body.blocked) {
-                detectMessage(message, settings, body)
-                process.log('Detected message containing ' + colors.bold(domain))
+            if (data.blocked) {
+                detectMessage(message, settings, redirData)
+                util.log('Detected message containing ' + colors.bold(domain))
                 return
+            }
+
+            // Follow redirects
+            if (config.followRedirects.enabled) {
+
+                let redirs = await redirects.resolve(url) // Get all redirects
+
+                // Check every redirect with API
+                for (let redir of redirs) {
+
+                    if (whitelist.check(redir)) continue
+
+                    let redirData = await util.checkDomain(redir)
+
+                    if (redirData.blocked) {
+                        detectMessage(message, settings, redirData)
+                        util.log('Detected message containing ' + colors.bold(redir))
+                        return
+                    }
+
+                }
             }
 
         }

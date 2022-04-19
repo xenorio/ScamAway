@@ -4,11 +4,13 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": "node index.js"
+        "start": "node index.js",
+        "update": "git pull && npm install && node util/updater.js"
     },
     "author": "Xenorio",
     "license": "LICENSE",
     "dependencies": {
+        "axios": "^0.26.1",
         "colors": "^1.4.0",
         "cross-fetch": "^3.1.5",
         "eris": "^0.16.1",

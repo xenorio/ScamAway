@@ -12,6 +12,7 @@ Looking for the API behind this? Head to https://github.com/Xenorio/ScamAway-API
 
 ## Features
 - Automatic detection of malicious links
+- Redirection following (URL shorteners etc)
 - Choose what happens when a message is detected (delete, kick, ban)
 - Report URLs
 - Detect unauthorized @everyone mentions
