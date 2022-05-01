@@ -34,7 +34,7 @@ module.exports = async(client, message) => {
             let data = await util.checkDomain(domain)
 
             if (data.blocked) {
-                detectMessage(message, settings, redirData)
+                detectMessage(message, settings, data)
                 util.log('Detected message containing ' + colors.bold(domain))
                 return
             }
