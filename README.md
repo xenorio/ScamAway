@@ -25,6 +25,9 @@ Looking for the API behind this? Head to https://github.com/Xenorio/ScamAway-API
 - Set your bot token in ``config.default.js``
 - Start the bot with ``npm start``
 
+### Updating
+By executing ``npm run update`` you can automatically pull the GitHub repo, install new dependencies, and merge new config entries all at the same time.
+
 ## Support
 For support and general talk about this project, head to the [Discord server](https://discord.xenorio.xyz)
 
