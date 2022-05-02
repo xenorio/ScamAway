@@ -32,12 +32,25 @@ module.exports.resolve = async(url) => {
         }).catch(err => { return })
 
         if (res && res.status >= 300 && res.status < 400) {
-            redirects.push((new URL(res.headers['location'])).hostname)
+
+            let relative = false
+
+            try {
+                redirects.push((new URL(res.headers['location'])).hostname)
+            } catch (error) {
+                relative = true
+            }
 
             count += 1
             if (count > config.followRedirects.maxRedirects) return
 
-            await check(res.headers['location'])
+            let nextUrl = res.headers['location']
+
+            if (relative) {
+                nextUrl = (new URL(currentUrl)).hostname + nextUrl
+            }
+
+            await check(nextUrl)
         }
 
     }
