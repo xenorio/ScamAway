@@ -46,6 +46,8 @@ Projects being used:
 - [cross-fetch](https://github.com/lquixada/cross-fetch)
 - [LevelDB](https://github.com/Level/level)
 - [ms](https://github.com/vercel/ms)
+- [jimp](https://github.com/oliver-moran/jimp)
+- [jsqrcode](https://github.com/edi9999/jsqrcode)
 
 External API:
 - [phish.sinking.yachts](https://phish.sinking.yachts/docs)
