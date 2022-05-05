@@ -44,6 +44,10 @@ module.exports = {
 
     },
 
+    // Whether image attachments should be checked for Discord login QR codes
+    // Careful! This may expose your public IP! (Same as redirect following)
+    // Also, this may use a lot of CPU resources due to image processing
+    qrDetection: false,
 
 
     // +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
