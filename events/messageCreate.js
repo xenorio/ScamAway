@@ -15,12 +15,18 @@ const extractUrls = require("extract-urls");
 const util = require('../util/util')
 const whitelist = require('../util/whitelist')
 const redirects = require('../util/redirects')
+const qr = require('../util/qr')
 
 module.exports = async(client, message) => {
 
     if (!message.guildID) return
 
     let settings = await util.getSettings(message.guildID)
+
+    // Check for Discord login QR
+    if (config.qrDetection) {
+        qr.check(message, settings)
+    }
 
     let URLs = extractUrls(message.content, true)
     if (URLs) {
