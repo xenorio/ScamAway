@@ -3,10 +3,16 @@
 # ScamAway
 The Anti-Phishing Discord Bot
 
+## Archival Notice
+As Discord has now finally taken the decision of disabling my main account for no reason whatsoever, I have decided to step away from it completely.
+This includes not developing any software for it anymore. 
+
+You can still use ScamAway if you host both the bot and the API yourself, it will just not get any further updates whatsoever, not even security related
+
+Feel free to fork the project and keep developing it!
+
 ## What's this?
 ScamAway is a Discord bot that aims to keep your servers free from annoying phishing links by detecting known domains, and has other related features
-
-[Invite the publicly hosted version](https://discord.com/api/oauth2/authorize?client_id=934294961686478858&permissions=1394254146630&scope=bot%20applications.commands)
 
 Looking for the API behind this? Head to https://github.com/Xenorio/ScamAway-API
 
